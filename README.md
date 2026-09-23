@@ -10,5 +10,13 @@ Configuration files to launch a Kubernetes cluster for Mongo Express and Mongo D
 minikube start
 kubectl apply -f mongo-secret.yaml
 kubectl apply -f mongo-db.yaml
+
 kubectl get all
+kubectl get all | grep mongodb
+
+kubectl get service
+kubectl describe service "service-name"
+
+kubectl get pod -o wide # To see pod IPs
+kubectl describe "pod-name"
 ```
