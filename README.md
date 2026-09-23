@@ -20,3 +20,12 @@ kubectl describe service "service-name"
 kubectl get pod -o wide # To see pod IPs
 kubectl describe "pod-name"
 ```
+
+- Create config map before referencing in the mongo-express deployment
+
+```bash
+kubectl apply -f mongo-config.yaml
+kubectl apply -f mongo-express.yaml
+
+kubectl logs "mongo-express-deployment-name"
+```
