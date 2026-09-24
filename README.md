@@ -35,3 +35,11 @@ kubectl logs "mongo-express-deployment-name"
 kubectl get service
 minikube service mongo-express-service 
 ```
+## Namespaces
+
+- Defining namespaces can provide better organisation and isolation of resources in a cluster which is useful when working with a compelx cluster with multiple applications and teams 
+- Check existing namespaces with `kubectl get namespace`
+- Resources can't generally access other resources in different namespaces (eg. ConfigMaps and Secrets need to be created separately for each namespace)
+- Services (eg. DB service) can be accessed accross different namespaces
+- You can set the namespace for resources when running `kubectl apply "congig-file" --namespace=my-namespace` or defining in the configuration files themselves - this provides better visibility and control as it will be checked in to source control.
+- Using a tool like [kubectx](https://github.com/ahmetb/kubectx) can make it easier to manage working with namespaces
