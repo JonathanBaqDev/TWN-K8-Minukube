@@ -43,3 +43,23 @@ minikube service mongo-express-service
 - Services (eg. DB service) can be accessed accross different namespaces
 - You can set the namespace for resources when running `kubectl apply "congig-file" --namespace=my-namespace` or defining in the configuration files themselves - this provides better visibility and control as it will be checked in to source control.
 - Using a tool like [kubectx](https://github.com/ahmetb/kubectx) can make it easier to manage working with namespaces
+
+## Ingress
+
+- Ingress routes external HTTP(S) traffic to services using rules such as host names and paths. This avoids exposing each application directly through an external service.
+- Traffic usually reaches the cluster through a cloud provider's load balancer or a proxy server. An Ingress controller receives and processes the requests.
+- For this local Minikube setup, install an Ingress controller to handle this routing. Depending on your setup, `minikube tunnel` may be needed to provide external access.
+- Installation instructions for the NGINX Ingress Controller are available [here](https://docs.nginx.com/nginx-ingress-controller/install/helm/open-source/).
+- As an example, we will expose the Minikube Dashboard through an Ingress resource:
+```bash
+minikube dashboard
+kubectl get ns
+kubectl get all -n kubernetes-dashboard
+```
+- Create an Ingress rule to route requests for a custom host name to the Dashboard service. See [dashboard-ingress.yaml](dashboard-ingress.yaml):
+```bash
+kubectl apply -f dashboard-ingress.yaml
+kubectl get ingress -n kubernetes-dashboard
+```
+- Add a mapping for `dashboard.example.com` to your Minikube IP in your local hosts file. If your setup requires it, run `minikube tunnel`.
+- Open **dashboard.example.com** in your browser.
