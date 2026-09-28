@@ -63,3 +63,17 @@ kubectl get ingress -n kubernetes-dashboard
 ```
 - Add a mapping for `dashboard.example.com` to your Minikube IP in your local hosts file. If your setup requires it, run `minikube tunnel`.
 - Open **dashboard.example.com** in your browser.
+
+### Default backend for custom dashboard 404 response
+- NGINX Ingress Controller can intercept HTTP error responses from an upstream service and send them to the Ingress default backend. This example replaces the Dashboard's 404 body with a custom message while preserving the 404 status.
+- The custom response pod and Service are defined in [custom-redirect.yaml](custom-redirect.yaml). The Dashboard Ingress enables 404 interception and points its default backend at that Service in [dashboard-ingress.yaml](dashboard-ingress.yaml).
+```bash
+kubectl apply -f custom-redirect.yaml
+kubectl apply -f dashboard-ingress.yaml
+
+# Confirm the Ingress is accepted by the controller
+kubectl describe ingress dashboard-ingress -n kubernetes-dashboard
+```
+- Open `http://dashboard.example.com/test` to request a Dashboard URL that returns 404. The response body should say **Dashboard page not found** and retain the 404 status.
+
+### Configuring TLS
