@@ -37,12 +37,12 @@ minikube service mongo-express-service
 ```
 ## Namespaces
 
-- Defining namespaces can provide better organisation and isolation of resources in a cluster which is useful when working with a compelx cluster with multiple applications and teams 
+Defining namespaces can provide better organization and isolation of resources in a cluster, which is useful when working with a complex cluster that has multiple applications and teams.
 - Check existing namespaces with `kubectl get namespace`
-- Resources can't generally access other resources in different namespaces (eg. ConfigMaps and Secrets need to be created separately for each namespace)
-- Services (eg. DB service) can be accessed accross different namespaces
-- You can set the namespace for resources when running `kubectl apply "congig-file" --namespace=my-namespace` or defining in the configuration files themselves - this provides better visibility and control as it will be checked in to source control.
-- Using a tool like [kubectx](https://github.com/ahmetb/kubectx) can make it easier to manage working with namespaces
+- ConfigMaps and Secrets are namespace-scoped, so create them in the namespace where their workloads need them.
+- Services can be reached across namespaces using their fully qualified DNS name, such as `service-name.namespace.svc.cluster.local`.
+- Set a resource's namespace in its configuration file, or apply it with `kubectl apply -f config-file.yaml --namespace=my-namespace`.
+- A tool like [kubectx](https://github.com/ahmetb/kubectx) can make it easier to work with namespaces.
 
 ## Ingress
 
@@ -77,3 +77,14 @@ kubectl describe ingress dashboard-ingress -n kubernetes-dashboard
 - Open `http://dashboard.example.com/test` to request a Dashboard URL that returns 404. The response body should say **Dashboard page not found** and retain the 404 status.
 
 ### Configuring TLS
+- Add the following to the ingress spec
+```yaml
+spec:
+  tls:
+    - hosts:
+        - dashboard.example.com
+      secretName: dashboard-tls-secret
+```
+- Replace the placeholders in [dashboard-tls-secret.yaml](dashboard-tls-secret.yaml) with the certificate and private key PEM contents before applying it. Do not commit a real private key to source control.
+- Apply the Secret in the same namespace as the Dashboard, then apply the Ingress configuration.
+- The `tls.crt` and `tls.key` values are the certificate and private key contents, not file paths.
