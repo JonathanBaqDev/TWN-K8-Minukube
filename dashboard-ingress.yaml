@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard-ingress
+  namespace: kubernetes-dashboard
+  annotations:
+    nginx.org/custom-http-errors: "404"
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: custom-error-backend
+      port:
+        number: 80
+  rules:
+    - host: dashboard.example.com
+      http:
+        paths:
+         - path: /
+           pathType: Prefix
+           backend:
+            service:
+             name: kubernetes-dashboard
+             port:
+              number: 80
