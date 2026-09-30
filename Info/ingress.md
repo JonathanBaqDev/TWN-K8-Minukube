@@ -10,7 +10,7 @@ minikube dashboard
 kubectl get ns
 kubectl get all -n kubernetes-dashboard
 ```
-- Create an Ingress rule to route requests for a custom host name to the Dashboard service. See [dashboard-ingress.yaml](dashboard-ingress.yaml):
+- Create an Ingress rule to route requests for a custom host name to the Dashboard service. See [dashboard-ingress.yaml](../dashboard-ingress.yaml):
 ```bash
 kubectl apply -f dashboard-ingress.yaml
 kubectl get ingress -n kubernetes-dashboard
@@ -20,7 +20,7 @@ kubectl get ingress -n kubernetes-dashboard
 
 ### Default backend for custom dashboard 404 response
 - NGINX Ingress Controller can intercept HTTP error responses from an upstream service and send them to the Ingress default backend. This example replaces the Dashboard's 404 body with a custom message while preserving the 404 status.
-- The custom response pod and Service are defined in [custom-redirect.yaml](custom-redirect.yaml). The Dashboard Ingress enables 404 interception and points its default backend at that Service in [dashboard-ingress.yaml](dashboard-ingress.yaml).
+- The custom response pod and Service are defined in [custom-redirect.yaml](../custom-redirect.yaml). The Dashboard Ingress enables 404 interception and points its default backend at that Service in [dashboard-ingress.yaml](../dashboard-ingress.yaml).
 ```bash
 kubectl apply -f custom-redirect.yaml
 kubectl apply -f dashboard-ingress.yaml
@@ -39,6 +39,6 @@ spec:
         - dashboard.example.com
       secretName: dashboard-tls-secret
 ```
-- Replace the placeholders in [dashboard-tls-secret.yaml](dashboard-tls-secret.yaml) with the certificate and private key PEM contents before applying it. Do not commit a real private key to source control.
+- Replace the placeholders in [dashboard-tls-secret.yaml](../dashboard-tls-secret.yaml) with the certificate and private key PEM contents before applying it. Do not commit a real private key to source control.
 - Apply the Secret in the same namespace as the Dashboard, then apply the Ingress configuration.
 - The `tls.crt` and `tls.key` values are the certificate and private key contents, not file paths.
