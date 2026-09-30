@@ -37,6 +37,6 @@ minikube service mongo-express-service
 ```
 ## More configurations
 
-- [Namespaces](info/namespaces.md)
-- [Ingress, Kubernetes Dashboard, TLS](info/ingress.md)
-- [Gateway API](info/gateway-api.md) 
+- [Namespaces](Info/namespaces.md)
+- [Ingress, Kubernetes Dashboard, TLS](Info/ingress.md)
+- [Gateway API](Info/gateway-api.md) 
